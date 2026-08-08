@@ -1,5 +1,6 @@
 import { auth } from "../src/lib/auth/server";
 import LogoutButton from "@/src/components/LogoutButton";
+import GraffitiMapWrapper from "@/src/components/map/GraffitiMapWrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,8 @@ export default async function HomePage() {
       ) : (
         <p>Not logged in</p>
       )}
+
+      <GraffitiMapWrapper />
     </main>
   );
 }
