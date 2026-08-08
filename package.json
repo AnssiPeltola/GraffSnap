@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "create-user": "node scripts/create-user.mjs"
   },
   "dependencies": {
     "@neon/config": "^0.14.1",
     "@neon/env": "^0.14.1",
+    "@neondatabase/auth": "^0.4.2-beta",
     "@neondatabase/serverless": "^1.1.0",
     "cloudinary": "^2.10.0",
     "drizzle-orm": "^0.45.2",
