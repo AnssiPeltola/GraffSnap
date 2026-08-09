@@ -13,19 +13,11 @@ export default async function HomePage() {
 
   return (
     <main>
-      <h1>GraffSnap</h1>
       {session?.user && (
         <AddGraffitiButton authenticated={Boolean(session?.user)} />
       )}
 
-      {session?.user ? (
-        <>
-          <p>Logged in as {session.user.name}</p>
-          <LogoutButton />
-        </>
-      ) : (
-        <p>Not logged in</p>
-      )}
+      {session?.user && <LogoutButton />}
 
       <GraffitiMapWrapper graffitiSightings={graffitiSightings} />
     </main>
