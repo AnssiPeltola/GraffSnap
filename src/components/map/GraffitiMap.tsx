@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import type { GraffitiSighting } from "@/src/db/schema";
 
 const defaultIcon = L.icon({
   iconRetinaUrl:
@@ -16,20 +17,11 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-const mockGraffiti = [
-  {
-    id: "1",
-    latitude: 61.477317,
-    longitude: 23.75787,
-  },
-  {
-    id: "2",
-    latitude: 61.478798,
-    longitude: 23.76155,
-  },
-];
+type Props = {
+  graffitiSightings: GraffitiSighting[];
+};
 
-export default function GraffitiMap() {
+export default function GraffitiMap({ graffitiSightings }: Props) {
   return (
     <MapContainer
       key="graffiti-map"
@@ -42,16 +34,22 @@ export default function GraffitiMap() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {mockGraffiti.map((graffiti) => (
+      {graffitiSightings.map((graffiti) => (
         <Marker
           key={graffiti.id}
-          position={[graffiti.latitude, graffiti.longitude]}
+          position={[Number(graffiti.latitude), Number(graffiti.longitude)]}
           icon={defaultIcon}
         >
           <Popup>
-            Graffiti #{graffiti.id}
+            <strong>Graffiti</strong>
             <br />
             {graffiti.latitude}, {graffiti.longitude}
+            {graffiti.notes && (
+              <>
+                <br />
+                {graffiti.notes}
+              </>
+            )}
           </Popup>
         </Marker>
       ))}
