@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import type { GraffitiFormData } from "@/src/lib/validation/graffiti";
 import graffitiSchema from "@/src/lib/validation/graffiti";
+import { useRouter } from "next/navigation";
 
 type Props = {
   onClose: () => void;
@@ -62,8 +62,9 @@ export default function AddGraffitiModal({ onClose }: Props) {
   //   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [notes, setNotes] = useState<string>("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [validResult, setValidResult] = useState<GraffitiFormData | null>(null);
-  const [validating, setValidating] = useState(false);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
 
   // Derive the preview URL from the selected file.
   const previewUrl = useMemo(() => {
@@ -105,7 +106,7 @@ export default function AddGraffitiModal({ onClose }: Props) {
   }
 
   async function handleSave() {
-    setValidating(true);
+    setGeneralError(null);
     setErrors({});
 
     const parse = graffitiSchema.safeParse({
@@ -122,28 +123,66 @@ export default function AddGraffitiModal({ onClose }: Props) {
         fieldErrors[String(path)] = issue.message;
       }
       setErrors(fieldErrors);
-      setValidResult(null);
-      setValidating(false);
       return;
     }
 
-    // Validation succeeded — expose the data for development
-    console.log("Validated graffiti form:", parse.data);
-    setValidResult(parse.data);
-    setValidating(false);
+    // Submit to server
+    const formData = new FormData();
+    formData.set("latitude", String(parse.data.latitude));
+    formData.set("longitude", String(parse.data.longitude));
+    if (file) formData.set("photo", file);
+    if (parse.data.notes) formData.set("notes", parse.data.notes);
+
+    setSubmitting(true);
+    try {
+      const resp = await fetch("/api/graffiti", {
+        method: "POST",
+        body: formData,
+      });
+      const json = await resp.json();
+
+      if (!resp.ok) {
+        if (json?.fieldErrors) {
+          setErrors(json.fieldErrors as Record<string, string>);
+        } else {
+          setGeneralError(
+            json?.message ?? "Could not save graffiti. Please try again.",
+          );
+        }
+        setSubmitting(false);
+        return;
+      }
+
+      // success
+      router.refresh();
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setGeneralError("Could not save graffiti. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/50"
+        onClick={() => {
+          if (!submitting) onClose();
+        }}
+      />
 
       <div className="relative w-full sm:w-[600px] max-h-[90vh] bg-white rounded-t-lg sm:rounded-lg shadow-lg overflow-hidden">
         <header className="flex items-center justify-between px-4 py-3 border-b">
           <h2 className="text-lg font-semibold">Add Graffiti</h2>
           <button
             aria-label="Close"
-            onClick={onClose}
+            onClick={() => {
+              if (!submitting) onClose();
+            }}
             className="p-2 rounded focus:outline-none"
+            aria-disabled={submitting}
           >
             ✕
           </button>
@@ -218,6 +257,8 @@ export default function AddGraffitiModal({ onClose }: Props) {
 
               {file && (
                 <div className="flex items-center gap-2">
+                  {/* Using native <img> for local object URL preview */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={previewUrl ?? undefined}
                     alt="preview"
@@ -258,31 +299,29 @@ export default function AddGraffitiModal({ onClose }: Props) {
             )}
           </section>
 
-          {validResult && (
+          {generalError && (
             <section className="mb-4">
-              <label className="block text-sm font-medium mb-2">
-                Validated payload (dev)
-              </label>
-              <pre className="bg-gray-50 p-2 rounded text-xs overflow-auto">
-                {JSON.stringify(validResult, null, 2)}
-              </pre>
+              <p className="text-sm text-red-600">{generalError}</p>
             </section>
           )}
         </div>
 
         <footer className="flex items-center justify-between gap-2 px-4 py-3 border-t">
           <button
-            onClick={onClose}
+            onClick={() => {
+              if (!submitting) onClose();
+            }}
             className="flex-1 py-2 rounded bg-gray-100 text-sm"
+            disabled={submitting}
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            disabled={validating}
+            disabled={submitting}
             className="flex-1 py-2 rounded bg-blue-600 text-white text-sm disabled:opacity-60"
           >
-            {validating ? "Validating..." : "Save"}
+            {submitting ? "Saving..." : "Save"}
           </button>
         </footer>
       </div>
