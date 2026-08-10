@@ -1,0 +1,119 @@
+/*
+* Remove Leaflet's normal white popup appearance and replace it
+* with the dark GraffSnap card.
+*/
+.graffiti-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgb(51 65 85);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgb(15 23 42) 0%, rgb(7 15 27) 100%);
+  color: white;
+  box-shadow:
+    0 18px 50px rgb(0 0 0 / 0.45),
+    0 4px 16px rgb(0 0 0 / 0.3);
+}
+
+.graffiti-popup .leaflet-popup-content {
+  width: 280px !important;
+  margin: 0;
+  padding: 20px;
+}
+
+/*
+* Match the popup arrow with the dark card.
+*/
+.graffiti-popup .leaflet-popup-tip {
+  background: rgb(7 15 27);
+  border-right: 1px solid rgb(51 65 85);
+  border-bottom: 1px solid rgb(51 65 85);
+  box-shadow: none;
+}
+
+/*
+* Leaflet's built-in close X.
+*/
+.graffiti-popup .leaflet-popup-close-button {
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 20;
+
+  display: flex !important;
+  height: 34px !important;
+  width: 34px !important;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9999px;
+  background: rgb(2 6 23 / 0.65);
+
+  color: rgb(203 213 225) !important;
+  font-size: 25px !important;
+  font-weight: 300 !important;
+  line-height: 1 !important;
+
+  backdrop-filter: blur(6px);
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.graffiti-popup .leaflet-popup-close-button:hover {
+  background: rgb(2 6 23 / 0.9);
+  color: white !important;
+}
+
+/*
+* Prevent Leaflet's default typography rules from affecting
+* buttons and paragraphs inside the custom card.
+*/
+.graffiti-popup button {
+  font-family: inherit;
+}
+
+/*
+* Slightly larger card on bigger screens.
+*/
+@media (min-width: 640px) {
+  .graffiti-popup .leaflet-popup-content {
+    width: 300px !important;
+  }
+}
+
+.graffiti-marker {
+  background: transparent;
+  border: none;
+}
+
+.graffiti-marker-pin {
+  position: relative;
+
+  width: 34px;
+  height: 34px;
+
+  border: 3px solid #9333ea;
+  border-radius: 50% 50% 50% 0;
+
+  background: linear-gradient(145deg, #c084fc, #9333ea);
+
+  box-shadow:
+    0 4px 10px rgb(0 0 0 / 0.35),
+    0 0 0 2px rgb(192 132 252 / 0.2);
+
+  transform: rotate(-45deg);
+}
+
+.graffiti-marker-dot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 10px;
+  height: 10px;
+
+  border-radius: 9999px;
+  background: white;
+
+  transform: translate(-50%, -50%) rotate(45deg);
+}

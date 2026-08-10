@@ -7,23 +7,29 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import type { GraffitiSighting } from "@/src/db/schema";
 import { buildCloudinaryTransformedUrl } from "@/src/lib/cloudinary-url";
 import { formatDateTime } from "@/src/lib/formatDateTime";
+import CalendarIcon from "../icons/CalendarIcon";
+import ExternalLinkIcon from "../icons/ExternalLinkIcon";
+import NotesIcon from "../icons/NotesIcon";
+import "../../styles/leaflet-popup.css";
 
-const defaultIcon = L.icon({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+const defaultIcon = L.divIcon({
+  className: "graffiti-marker",
+  html: `
+    <div class="graffiti-marker-pin">
+      <div class="graffiti-marker-dot"></div>
+    </div>
+  `,
+  iconSize: [34, 44],
+  iconAnchor: [17, 44],
+  popupAnchor: [0, -42],
 });
 
 type Props = {
   graffitiSightings: GraffitiSighting[];
 };
 
-const THUMBNAIL_TRANSFORMATION = "f_auto,q_auto,c_fill,g_auto,w_320,h_240";
+const THUMBNAIL_TRANSFORMATION = "f_auto,q_auto,c_fill,g_auto,w_640,h_480";
+
 const VIEWER_TRANSFORMATION = "f_auto,q_auto,c_limit,w_1400,h_1400";
 
 export default function GraffitiMap({ graffitiSightings }: Props) {
@@ -47,8 +53,11 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
         {graffitiSightings.map((graffiti) => {
           const thumbnailUrl = buildCloudinaryTransformedUrl(
             graffiti.imageUrl,
-            { transformation: THUMBNAIL_TRANSFORMATION },
+            {
+              transformation: THUMBNAIL_TRANSFORMATION,
+            },
           );
+
           const createdAtLabel = formatDateTime(graffiti.createdAt);
           const hasNotes = Boolean(graffiti.notes?.trim());
 
@@ -58,47 +67,64 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
               position={[Number(graffiti.latitude), Number(graffiti.longitude)]}
               icon={defaultIcon}
             >
-              <Popup maxWidth={280} className="graffiti-popup">
-                <div className="w-[220px] overflow-hidden rounded-2xl bg-white">
-                  <button
-                    type="button"
-                    onClick={() => setActiveGraffiti(graffiti)}
-                    className="block w-full overflow-hidden bg-slate-100 text-left"
-                    aria-label="View larger graffiti image"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={thumbnailUrl}
-                      alt="Graffiti thumbnail"
-                      className="h-40 w-full object-cover"
-                      loading="lazy"
-                    />
+              <Popup maxWidth={320} minWidth={280} className="graffiti-popup">
+                <div className="overflow-hidden">
+                  {/* Image card */}
+                  <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
+                    <button
+                      type="button"
+                      onClick={() => setActiveGraffiti(graffiti)}
+                      className="block w-full text-left"
+                      aria-label="View larger graffiti image"
+                    >
+                      <div className="aspect-[4/3] w-full overflow-hidden bg-slate-950">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={thumbnailUrl}
+                          alt="Graffiti thumbnail"
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
 
-                    <span className="block border-t border-slate-100 bg-slate-50 px-3 py-2 text-center text-xs font-medium text-slate-600">
-                      View larger image
-                    </span>
-                  </button>
-                  <div className="space-y-3 px-3 py-3">
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                      <div className="flex items-center justify-center gap-3 border-t border-slate-700 bg-slate-900 px-4 py-4 text-sm font-semibold text-purple-400 transition hover:bg-slate-800">
+                        <ExternalLinkIcon />
+                        <span>View larger image</span>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Found */}
+                  <section className="mt-5 border-t border-slate-700 pt-5">
+                    <div className="flex items-center gap-3 text-purple-400">
+                      <CalendarIcon />
+
+                      <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
                         Found
-                      </p>
-                      <p className="mt-0.5 text-xs font-medium text-slate-700">
-                        {createdAtLabel}
-                      </p>
+                      </h3>
                     </div>
 
-                    {hasNotes && (
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    <p className="mt-3 text-base leading-relaxed text-slate-100">
+                      {createdAtLabel}
+                    </p>
+                  </section>
+
+                  {/* Notes */}
+                  {hasNotes && (
+                    <section className="mt-5 border-t border-slate-700 pt-5">
+                      <div className="flex items-center gap-3 text-purple-400">
+                        <NotesIcon />
+
+                        <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
                           Notes
-                        </p>
-                        <p className="mt-0.5 whitespace-pre-wrap text-sm leading-5 text-slate-900">
-                          {graffiti.notes}
-                        </p>
+                        </h3>
                       </div>
-                    )}
-                  </div>
+
+                      <p className="mt-3 whitespace-pre-wrap text-base leading-relaxed text-slate-100">
+                        {graffiti.notes}
+                      </p>
+                    </section>
+                  )}
                 </div>
               </Popup>
             </Marker>

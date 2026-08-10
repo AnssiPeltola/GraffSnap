@@ -167,21 +167,21 @@ export default function AddGraffitiModal({ onClose }: Props) {
   return (
     <div className="fixed inset-0 z-[99999] flex items-end sm:items-center justify-center">
       <div
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-black/70"
         onClick={() => {
           if (!submitting) onClose();
         }}
       />
 
-      <div className="relative w-full sm:w-[600px] max-h-[90vh] bg-white rounded-t-lg sm:rounded-lg shadow-lg overflow-hidden">
-        <header className="flex items-center justify-between px-4 py-3 border-b">
+      <div className="relative w-full sm:w-[600px] max-h-[90vh] bg-slate-900 text-slate-100 border border-slate-800 rounded-t-xl sm:rounded-xl shadow-2xl shadow-black/40 overflow-hidden">
+        <header className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
           <h2 className="text-lg font-semibold">Add Graffiti</h2>
           <button
             aria-label="Close"
             onClick={() => {
               if (!submitting) onClose();
             }}
-            className="p-2 rounded focus:outline-none"
+            className="p-2 rounded text-slate-300 hover:bg-slate-800 hover:text-white transition focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/60"
             aria-disabled={submitting}
           >
             ✕
@@ -190,8 +190,10 @@ export default function AddGraffitiModal({ onClose }: Props) {
 
         <div className="p-4 overflow-auto" style={{ maxHeight: "65vh" }}>
           <section className="mb-4">
-            <label className="block text-sm font-medium mb-2">Location</label>
-            <div className="h-48 mb-2">
+            <label className="block text-sm font-medium mb-2 text-slate-300">
+              Location
+            </label>
+            <div className="h-48 mb-2 overflow-hidden rounded-lg border border-slate-800">
               <MapContainer
                 center={DEFAULT_CENTER}
                 zoom={15}
@@ -211,40 +213,46 @@ export default function AddGraffitiModal({ onClose }: Props) {
 
             <div className="flex gap-2">
               <div className="flex-1">
-                <label className="text-xs">Latitude</label>
+                <label className="text-xs text-slate-400">Latitude</label>
                 <input
-                  className="mt-1 block w-full rounded border px-2 py-2 text-sm"
+                  className="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-800 px-2 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30"
                   value={latitude}
                   onChange={(e) => setLatitude(e.target.value)}
                   inputMode="decimal"
                   placeholder="61.4981"
                 />
                 {errors.latitude && (
-                  <p className="text-xs text-red-600">{errors.latitude}</p>
+                  <p className="mt-1 text-xs text-rose-400">
+                    {errors.latitude}
+                  </p>
                 )}
               </div>
 
               <div className="flex-1">
-                <label className="text-xs">Longitude</label>
+                <label className="text-xs text-slate-400">Longitude</label>
                 <input
-                  className="mt-1 block w-full rounded border px-2 py-2 text-sm"
+                  className="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-800 px-2 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30"
                   value={longitude}
                   onChange={(e) => setLongitude(e.target.value)}
                   inputMode="decimal"
                   placeholder="23.7608"
                 />
                 {errors.longitude && (
-                  <p className="text-xs text-red-600">{errors.longitude}</p>
+                  <p className="mt-1 text-xs text-rose-400">
+                    {errors.longitude}
+                  </p>
                 )}
               </div>
             </div>
           </section>
 
           <section className="mb-4">
-            <label className="block text-sm font-medium mb-2">Photo</label>
+            <label className="block text-sm font-medium mb-2 text-slate-300">
+              Photo
+            </label>
 
             <div className="flex items-center gap-3">
-              <label className="inline-flex items-center px-3 py-2 bg-gray-100 rounded text-sm cursor-pointer">
+              <label className="inline-flex items-center rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 cursor-pointer transition hover:bg-slate-700 focus-within:ring-2 focus-within:ring-fuchsia-500/30">
                 <input
                   type="file"
                   accept="image/*"
@@ -265,10 +273,12 @@ export default function AddGraffitiModal({ onClose }: Props) {
                     className="w-16 h-16 object-cover rounded"
                   />
                   <div className="text-xs">
-                    <div className="truncate w-28">{file.name}</div>
+                    <div className="truncate w-28 text-slate-300">
+                      {file.name}
+                    </div>
                     <button
                       onClick={clearFile}
-                      className="text-xs text-blue-600"
+                      className="text-xs text-fuchsia-400 hover:text-fuchsia-300"
                     >
                       Replace
                     </button>
@@ -278,40 +288,40 @@ export default function AddGraffitiModal({ onClose }: Props) {
             </div>
 
             {errors.photo && (
-              <p className="text-xs text-red-600 mt-2">{errors.photo}</p>
+              <p className="mt-2 text-xs text-rose-400">{errors.photo}</p>
             )}
           </section>
 
           <section className="mb-4">
-            <label className="block text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2 text-slate-300">
               Notes (optional)
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full rounded border px-2 py-2 text-sm"
+              className="w-full rounded-lg border border-slate-700 bg-slate-800 px-2 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30"
               rows={4}
               maxLength={500}
               placeholder="Any helpful notes about the location"
             />
             {errors.notes && (
-              <p className="text-xs text-red-600">{errors.notes}</p>
+              <p className="mt-1 text-xs text-rose-400">{errors.notes}</p>
             )}
           </section>
 
           {generalError && (
             <section className="mb-4">
-              <p className="text-sm text-red-600">{generalError}</p>
+              <p className="text-sm text-rose-400">{generalError}</p>
             </section>
           )}
         </div>
 
-        <footer className="flex items-center justify-between gap-2 px-4 py-3 border-t">
+        <footer className="flex items-center justify-between gap-2 border-t border-slate-800 px-4 py-3">
           <button
             onClick={() => {
               if (!submitting) onClose();
             }}
-            className="flex-1 py-2 rounded bg-gray-100 text-sm"
+            className="flex-1 rounded-lg border border-slate-700 bg-slate-800 py-2 text-sm text-slate-100 transition hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/60 disabled:cursor-not-allowed disabled:opacity-60"
             disabled={submitting}
           >
             Cancel
@@ -319,7 +329,7 @@ export default function AddGraffitiModal({ onClose }: Props) {
           <button
             onClick={handleSave}
             disabled={submitting}
-            className="flex-1 py-2 rounded bg-blue-600 text-white text-sm disabled:opacity-60"
+            className="flex-1 rounded-lg bg-gradient-to-r from-pink-500 to-violet-600 py-2 text-sm font-medium text-white shadow-lg shadow-fuchsia-900/20 transition hover:from-pink-600 hover:to-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/60 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Saving..." : "Save"}
           </button>
