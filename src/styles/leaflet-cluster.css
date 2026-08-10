@@ -1,0 +1,54 @@
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background: transparent !important;
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+  font-weight: 700;
+
+  border-radius: 9999px;
+
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.18);
+  border: 2px solid rgba(124, 58, 237, 0.18);
+}
+
+.marker-cluster-small div {
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+  font-size: 12px;
+}
+
+.marker-cluster-medium div {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  background: linear-gradient(135deg, #6d28d9 0%, #c4b5fd 100%);
+  font-size: 13px;
+}
+
+.marker-cluster-large div {
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  background: linear-gradient(135deg, #5b21b6 0%, #f472b6 100%);
+  font-size: 14px;
+}
+
+.marker-cluster span {
+  line-height: 1;
+}
+
+.leaflet-container .marker-cluster {
+  cursor: pointer;
+  touch-action: manipulation;
+}
