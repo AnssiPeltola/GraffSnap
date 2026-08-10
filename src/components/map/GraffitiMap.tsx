@@ -81,7 +81,12 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
                 ]}
                 icon={defaultIcon}
               >
-                <Popup maxWidth={320} minWidth={280} className="graffiti-popup">
+                <Popup
+                  maxWidth={320}
+                  className="graffiti-popup"
+                  closeOnClick={false}
+                  autoClose={true}
+                >
                   <div className="overflow-hidden">
                     {/* Image card */}
                     <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
@@ -101,7 +106,7 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
                           />
                         </div>
 
-                        <div className="flex items-center justify-center gap-3 border-t border-slate-700 bg-slate-900 px-4 py-4 text-sm font-semibold text-purple-400 transition hover:bg-slate-800">
+                        <div className="flex items-center justify-center gap-2 border-t border-slate-700 bg-slate-900 px-4 py-3 text-xs font-semibold text-purple-400 transition hover:bg-slate-800 sm:gap-3 sm:py-4 sm:text-sm">
                           <ExternalLinkIcon />
                           <span>View larger image</span>
                         </div>
@@ -109,32 +114,32 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
                     </div>
 
                     {/* Found */}
-                    <section className="mt-5 border-t border-slate-700 pt-5">
-                      <div className="flex items-center gap-3 text-purple-400">
+                    <section className="mt-3 border-t border-slate-700 pt-3 sm:mt-4 sm:pt-4">
+                      <div className="flex items-center gap-2 text-purple-400">
                         <CalendarIcon />
 
-                        <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-sm">
                           Found
                         </h3>
                       </div>
 
-                      <p className="mt-3 text-base leading-relaxed text-slate-100">
+                      <p className="mt-1.5 text-sm leading-5 text-slate-100 sm:mt-2 sm:text-base">
                         {createdAtLabel}
                       </p>
                     </section>
 
                     {/* Notes */}
                     {hasNotes && (
-                      <section className="mt-5 border-t border-slate-700 pt-5">
-                        <div className="flex items-center gap-3 text-purple-400">
+                      <section className="mt-3 border-t border-slate-700 pt-3 sm:mt-4 sm:pt-4">
+                        <div className="flex items-center gap-2 text-purple-400">
                           <NotesIcon />
 
-                          <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
+                          <h3 className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-sm">
                             Notes
                           </h3>
                         </div>
 
-                        <p className="mt-3 whitespace-pre-wrap text-base leading-relaxed text-slate-100">
+                        <p className="mt-1.5 whitespace-pre-wrap text-sm leading-5 text-slate-100 sm:mt-2 sm:text-base">
                           {graffiti.notes}
                         </p>
                       </section>
