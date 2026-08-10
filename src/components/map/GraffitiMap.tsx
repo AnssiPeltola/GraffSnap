@@ -4,6 +4,11 @@ import "leaflet/dist/leaflet.css";
 import { useState } from "react";
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "../../styles/leaflet-cluster.css";
+import MarkerClusterGroup from "./MarkerCluster";
 import type { GraffitiSighting } from "@/src/db/schema";
 import { buildCloudinaryTransformedUrl } from "@/src/lib/cloudinary-url";
 import { formatDateTime } from "@/src/lib/formatDateTime";
@@ -50,86 +55,96 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {graffitiSightings.map((graffiti) => {
-          const thumbnailUrl = buildCloudinaryTransformedUrl(
-            graffiti.imageUrl,
-            {
-              transformation: THUMBNAIL_TRANSFORMATION,
-            },
-          );
+        <MarkerClusterGroup
+          chunkedLoading
+          disableClusteringAtZoom={18}
+          maxClusterRadius={50}
+          spiderfyOnMaxZoom={false}
+        >
+          {graffitiSightings.map((graffiti) => {
+            const thumbnailUrl = buildCloudinaryTransformedUrl(
+              graffiti.imageUrl,
+              {
+                transformation: THUMBNAIL_TRANSFORMATION,
+              },
+            );
 
-          const createdAtLabel = formatDateTime(graffiti.createdAt);
-          const hasNotes = Boolean(graffiti.notes?.trim());
+            const createdAtLabel = formatDateTime(graffiti.createdAt);
+            const hasNotes = Boolean(graffiti.notes?.trim());
 
-          return (
-            <Marker
-              key={graffiti.id}
-              position={[Number(graffiti.latitude), Number(graffiti.longitude)]}
-              icon={defaultIcon}
-            >
-              <Popup maxWidth={320} minWidth={280} className="graffiti-popup">
-                <div className="overflow-hidden">
-                  {/* Image card */}
-                  <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
-                    <button
-                      type="button"
-                      onClick={() => setActiveGraffiti(graffiti)}
-                      className="block w-full text-left"
-                      aria-label="View larger graffiti image"
-                    >
-                      <div className="aspect-[4/3] w-full overflow-hidden bg-slate-950">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={thumbnailUrl}
-                          alt="Graffiti thumbnail"
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
+            return (
+              <Marker
+                key={graffiti.id}
+                position={[
+                  Number(graffiti.latitude),
+                  Number(graffiti.longitude),
+                ]}
+                icon={defaultIcon}
+              >
+                <Popup maxWidth={320} minWidth={280} className="graffiti-popup">
+                  <div className="overflow-hidden">
+                    {/* Image card */}
+                    <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
+                      <button
+                        type="button"
+                        onClick={() => setActiveGraffiti(graffiti)}
+                        className="block w-full text-left"
+                        aria-label="View larger graffiti image"
+                      >
+                        <div className="aspect-[4/3] w-full overflow-hidden bg-slate-950">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={thumbnailUrl}
+                            alt="Graffiti thumbnail"
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
 
-                      <div className="flex items-center justify-center gap-3 border-t border-slate-700 bg-slate-900 px-4 py-4 text-sm font-semibold text-purple-400 transition hover:bg-slate-800">
-                        <ExternalLinkIcon />
-                        <span>View larger image</span>
-                      </div>
-                    </button>
-                  </div>
-
-                  {/* Found */}
-                  <section className="mt-5 border-t border-slate-700 pt-5">
-                    <div className="flex items-center gap-3 text-purple-400">
-                      <CalendarIcon />
-
-                      <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
-                        Found
-                      </h3>
+                        <div className="flex items-center justify-center gap-3 border-t border-slate-700 bg-slate-900 px-4 py-4 text-sm font-semibold text-purple-400 transition hover:bg-slate-800">
+                          <ExternalLinkIcon />
+                          <span>View larger image</span>
+                        </div>
+                      </button>
                     </div>
 
-                    <p className="mt-3 text-base leading-relaxed text-slate-100">
-                      {createdAtLabel}
-                    </p>
-                  </section>
-
-                  {/* Notes */}
-                  {hasNotes && (
+                    {/* Found */}
                     <section className="mt-5 border-t border-slate-700 pt-5">
                       <div className="flex items-center gap-3 text-purple-400">
-                        <NotesIcon />
+                        <CalendarIcon />
 
                         <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
-                          Notes
+                          Found
                         </h3>
                       </div>
 
-                      <p className="mt-3 whitespace-pre-wrap text-base leading-relaxed text-slate-100">
-                        {graffiti.notes}
+                      <p className="mt-3 text-base leading-relaxed text-slate-100">
+                        {createdAtLabel}
                       </p>
                     </section>
-                  )}
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
+
+                    {/* Notes */}
+                    {hasNotes && (
+                      <section className="mt-5 border-t border-slate-700 pt-5">
+                        <div className="flex items-center gap-3 text-purple-400">
+                          <NotesIcon />
+
+                          <h3 className="text-sm font-bold uppercase tracking-[0.08em]">
+                            Notes
+                          </h3>
+                        </div>
+
+                        <p className="mt-3 whitespace-pre-wrap text-base leading-relaxed text-slate-100">
+                          {graffiti.notes}
+                        </p>
+                      </section>
+                    )}
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
+        </MarkerClusterGroup>
       </MapContainer>
 
       {activeGraffiti && (
