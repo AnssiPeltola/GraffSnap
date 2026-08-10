@@ -43,7 +43,7 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
         key="graffiti-map"
         center={[61.481, 23.76]}
         zoom={15}
-        style={{ height: "90%", width: "100%" }}
+        style={{ height: "80%", width: "100%" }}
       >
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
