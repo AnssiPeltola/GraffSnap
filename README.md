@@ -1,13 +1,73 @@
 # GraffSnap
 
-- GraffSnap is mobile-first web application for documenting and tracking graffiti found in public places around Finland.
+GraffSnap is a mobile-first web app built for tracking and documenting the public graffiti work of a specific graffiti artist. Users can view sightings on a map, while authenticated users can add new locations with photos and optional notes.
 
-- The main idea is simple: when a specific graffiti is spotted, the user can save its location on a map, upload a photo, record when it was seen, and optionally add notes. Every saved sighting is then displayed as a marker on an interactive map.
+## ✨ Features
 
-- The application is designed primarily for iPhone and mobile use, so adding a new graffiti sighting should be fast and easy. The user can use the phone's current GPS location or manually choose the location on the map, take or select a photo, and save the sighting in just a few steps.
+- 🗺️ Interactive map using Leaflet and OpenStreetMap
+- 📍 Save graffiti locations with latitude and longitude
+- 📷 Take photos directly from a mobile device or choose existing images
+- 🖼️ Resize and convert uploaded images to WebP with Sharp
+- ☁️ Store and optimize images with Cloudinary
+- 📝 Optional notes and timestamps for each graffiti sighting
+- 🔎 View graffiti information and images directly from map markers
+- 📍 Use device location to select a graffiti location
+- 🔐 Authentication with Neon Auth
+- 👤 Protected graffiti creation for authenticated users
+- 🗄️ PostgreSQL database with Neon and Drizzle ORM
+- ☁️ Deployed with Vercel
 
-- The map itself can be publicly visible, allowing visitors to explore previously found graffiti locations and view their photos and details. However, only the authenticated user can add, edit, or delete graffiti sightings.
+---
 
-- The application uses Next.js and TypeScript for the frontend and backend, Neon PostgreSQL for storing graffiti data and coordinates, Leaflet for the interactive map, Cloudinary for image storage and optimization, and Vercel for deployment.
+## 🧰 Tech Stack
 
-- The goal is to create a simple personal collection and visual history of where the graffiti has been found over time.
+### Frontend
+
+- **Next.js**
+- **React**
+- **TypeScript**
+- **Tailwind CSS**
+- **Leaflet**
+- **React Leaflet**
+- **OpenStreetMap**
+
+### Backend
+
+- **Next.js App Router**
+- **Neon PostgreSQL**
+- **Drizzle ORM**
+- **Neon Auth**
+- **Zod**
+
+### Images
+
+- **Cloudinary**
+- **Sharp**
+
+### Deployment
+
+- **Vercel**
+
+---
+
+## Creating a user
+
+GraffSnap is a personal project and does not provide public user registration.
+Users are created manually through the CLI:
+
+```bash
+npm run create-user
+```
+
+The script asks for:
+
+```text
+GraffSnap user creation
+
+Name: Anssi
+Email: anssi@example.com
+Password: ****
+
+Creating user...
+✓ User created successfully
+```
