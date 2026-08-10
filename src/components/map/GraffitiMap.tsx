@@ -114,32 +114,32 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
                     </div>
 
                     {/* Found */}
-                    <section className="mt-4 border-t border-slate-700 pt-4">
+                    <section className="mt-3 border-t border-slate-700 pt-3 sm:mt-4 sm:pt-4">
                       <div className="flex items-center gap-2 text-purple-400">
                         <CalendarIcon />
 
-                        <h3 className="text-xs font-bold uppercase tracking-[0.08em] sm:text-sm">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-sm">
                           Found
                         </h3>
                       </div>
 
-                      <p className="mt-2 text-sm leading-5 text-slate-100 sm:text-base">
+                      <p className="mt-1.5 text-sm leading-5 text-slate-100 sm:mt-2 sm:text-base">
                         {createdAtLabel}
                       </p>
                     </section>
 
                     {/* Notes */}
                     {hasNotes && (
-                      <section className="mt-4 border-t border-slate-700 pt-4">
+                      <section className="mt-3 border-t border-slate-700 pt-3 sm:mt-4 sm:pt-4">
                         <div className="flex items-center gap-2 text-purple-400">
                           <NotesIcon />
 
-                          <h3 className="text-xs font-bold uppercase tracking-[0.08em] sm:text-sm">
+                          <h3 className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-sm">
                             Notes
                           </h3>
                         </div>
 
-                        <p className="mt-2 whitespace-pre-wrap text-sm leading-5 text-slate-100 sm:text-base">
+                        <p className="mt-1.5 whitespace-pre-wrap text-sm leading-5 text-slate-100 sm:mt-2 sm:text-base">
                           {graffiti.notes}
                         </p>
                       </section>
