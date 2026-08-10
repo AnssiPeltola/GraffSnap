@@ -84,8 +84,14 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
                 <Popup
                   maxWidth={320}
                   minWidth={280}
+                  maxHeight={Math.round(
+                    typeof window !== "undefined"
+                      ? window.innerHeight * 0.6
+                      : 400,
+                  )}
                   className="graffiti-popup"
-                  autoPan={false}
+                  autoPan={true}
+                  autoPanPadding={[20, 20]}
                   closeOnClick={false}
                   autoClose={true}
                 >
