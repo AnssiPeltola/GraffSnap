@@ -12,14 +12,12 @@ export default async function HomePage() {
   const graffitiSightings = await getAllGraffitiSightings();
 
   return (
-    <main>
-      {session?.user && (
-        <AddGraffitiButton authenticated={Boolean(session?.user)} />
-      )}
+    <main className="flex h-screen flex-col overflow-hidden bg-slate-950 p-3 sm:p-4">
+      <GraffitiMapWrapper graffitiSightings={graffitiSightings} />
+
+      {session?.user && <AddGraffitiButton authenticated />}
 
       {session?.user && <LogoutButton />}
-
-      <GraffitiMapWrapper graffitiSightings={graffitiSightings} />
     </main>
   );
 }
