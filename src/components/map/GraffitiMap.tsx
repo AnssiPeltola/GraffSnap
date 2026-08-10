@@ -81,7 +81,12 @@ export default function GraffitiMap({ graffitiSightings }: Props) {
                 ]}
                 icon={defaultIcon}
               >
-                <Popup maxWidth={320} minWidth={280} className="graffiti-popup">
+                <Popup
+                  maxWidth={320}
+                  minWidth={280}
+                  autoPan={false}
+                  className="graffiti-popup"
+                >
                   <div className="overflow-hidden">
                     {/* Image card */}
                     <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
