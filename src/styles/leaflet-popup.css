@@ -18,6 +18,10 @@
   width: 280px !important;
   margin: 0;
   padding: 20px;
+
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 /*
@@ -77,6 +81,14 @@
 @media (min-width: 640px) {
   .graffiti-popup .leaflet-popup-content {
     width: 300px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .graffiti-popup .leaflet-popup-content {
+    width: min(280px, calc(100vw - 48px)) !important;
+    max-height: 60vh;
+    padding: 16px;
   }
 }
 
