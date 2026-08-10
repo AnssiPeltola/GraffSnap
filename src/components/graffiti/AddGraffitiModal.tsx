@@ -6,6 +6,7 @@ import L from "leaflet";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import graffitiSchema from "@/src/lib/validation/graffiti";
 import { useRouter } from "next/navigation";
+import LocateMeButton from "./LocateMeButton";
 
 type Props = {
   onClose: () => void;
@@ -86,14 +87,21 @@ export default function AddGraffitiModal({ onClose }: Props) {
     return [lat, lng] as [number, number];
   }, [latitude, longitude]);
 
-  function handleMapClick(lat: number, lng: number) {
+  function setCoords(lat: number, lng: number) {
     setLatitude(String(lat));
     setLongitude(String(lng));
   }
 
+  function handleMapClick(lat: number, lng: number) {
+    setCoords(lat, lng);
+  }
+
   function handleMarkerDrag(lat: number, lng: number) {
-    setLatitude(String(lat));
-    setLongitude(String(lng));
+    setCoords(lat, lng);
+  }
+
+  function handleLocate(lat: number, lng: number) {
+    setCoords(lat, lng);
   }
 
   function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -165,7 +173,7 @@ export default function AddGraffitiModal({ onClose }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-end sm:items-center justify-center">
+    <div className="fixed inset-0 z-99999 flex items-end sm:items-center justify-center">
       <div
         className="absolute inset-0 bg-black/70"
         onClick={() => {
@@ -173,7 +181,7 @@ export default function AddGraffitiModal({ onClose }: Props) {
         }}
       />
 
-      <div className="relative w-full sm:w-[600px] max-h-[90vh] bg-slate-900 text-slate-100 border border-slate-800 rounded-t-xl sm:rounded-xl shadow-2xl shadow-black/40 overflow-hidden">
+      <div className="relative w-full sm:w-150 max-h-[90vh] bg-slate-900 text-slate-100 border border-slate-800 rounded-t-xl sm:rounded-xl shadow-2xl shadow-black/40 overflow-hidden">
         <header className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
           <h2 className="text-lg font-semibold">Add Graffiti</h2>
           <button
@@ -203,6 +211,7 @@ export default function AddGraffitiModal({ onClose }: Props) {
                   attribution="&copy; OpenStreetMap contributors"
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                <LocateMeButton onLocate={handleLocate} />
                 <MapSelector
                   position={position}
                   onClick={handleMapClick}
@@ -329,7 +338,7 @@ export default function AddGraffitiModal({ onClose }: Props) {
           <button
             onClick={handleSave}
             disabled={submitting}
-            className="flex-1 rounded-lg bg-gradient-to-r from-pink-500 to-violet-600 py-2 text-sm font-medium text-white shadow-lg shadow-fuchsia-900/20 transition hover:from-pink-600 hover:to-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/60 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 rounded-lg bg-linear-to-r from-pink-500 to-violet-600 py-2 text-sm font-medium text-white shadow-lg shadow-fuchsia-900/20 transition hover:from-pink-600 hover:to-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/60 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Saving..." : "Save"}
           </button>
