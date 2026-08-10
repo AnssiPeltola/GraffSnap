@@ -15,9 +15,6 @@ export default async function LoginPage() {
 
   return (
     <main>
-      <h1>GraffSnap</h1>
-      <h2>Login</h2>
-
       <LoginForm />
     </main>
   );
