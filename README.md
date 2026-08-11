@@ -19,6 +19,22 @@ GraffSnap is a mobile-first web app built for tracking and documenting the publi
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <a href="public/screenshots/screenshot1.png">
+    <img src="public/screenshots/screenshot1.png" height="500" alt="Map">
+  </a>
+  <a href="public/screenshots/screenshot2.png">
+    <img src="public/screenshots/screenshot2.png" height="500" alt="Map">
+  </a>
+  <a href="public/screenshots/screenshot3.png">
+    <img src="public/screenshots/screenshot3.png" height="500" alt="Add Graffiti">
+  </a>
+</p>
+
+---
+
 ## 🧰 Tech Stack
 
 ### Frontend
