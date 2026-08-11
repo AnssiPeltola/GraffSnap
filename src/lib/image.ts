@@ -3,19 +3,16 @@ import { cloudinary } from "../lib/cloudinary";
 import type { UploadApiResponse } from "cloudinary";
 
 export async function resizeImage(buffer: Buffer): Promise<Buffer> {
-  return (
-    sharp(buffer)
-      // Needs more testing if this is needed. iPhone might rotate the picture.
-      // .rotate()
-      .resize({
-        width: 1200,
-        withoutEnlargement: true,
-      })
-      .webp({
-        quality: 82,
-      })
-      .toBuffer()
-  );
+  return sharp(buffer)
+    .rotate()
+    .resize({
+      width: 1200,
+      withoutEnlargement: true,
+    })
+    .webp({
+      quality: 82,
+    })
+    .toBuffer();
 }
 
 export async function uploadToCloudinary(
