@@ -5,6 +5,7 @@ GraffSnap is a mobile-first web app built for tracking and documenting the publi
 ## ✨ Features
 
 - 🗺️ Interactive map using Leaflet and OpenStreetMap
+- 🗺️ Marker clustering for nearby graffiti sightings
 - 📍 Save graffiti locations with latitude and longitude
 - 📷 Take photos directly from a mobile device or choose existing images
 - 🖼️ Resize and convert uploaded images to WebP with Sharp
