@@ -265,7 +265,6 @@ export default function AddGraffitiModal({ onClose }: Props) {
                 <input
                   type="file"
                   accept="image/*"
-                  capture="environment"
                   onChange={onFileChange}
                   className="sr-only"
                 />
